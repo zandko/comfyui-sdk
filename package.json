@@ -1,0 +1,42 @@
+{
+  "name": "comfyui-sdk",
+  "version": "0.0.2",
+  "description": "ComfyUI SDK",
+  "author": "Zane",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "comfyui",
+    "sdk"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "cos-nodejs-sdk-v5": "^2.15.0",
+    "lodash": "^4.17.21",
+    "p-queue": "^8.1.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.13.2",
+    "@types/lodash": "^4.17.17",
+    "@types/node": "^22.15.29",
+    "eslint": "^9.28.0",
+    "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "packageManager": "pnpm@10.6.1+sha1.17584c9dbb21a878cd7ab42a6d52f2250c13db7a"
+}
