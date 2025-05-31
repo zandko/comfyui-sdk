@@ -1,6 +1,6 @@
 {
   "name": "comfyui-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "ComfyUI SDK",
   "author": "Zane",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "ai",
     "comfyui",
     "sdk"
-  ], 
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
