@@ -37,7 +37,6 @@ export interface ClientOptions {
   logLevel?: LogLevel
 }
 
-
 /**
  * Arbitrary payload representing a workflow definition.
  * Keys map to node identifiers or parameters, values are inputs.
@@ -327,7 +326,6 @@ export type InferInputType<TInputs extends readonly NodeInput[]> =
     } & {
       [K in TInputs[number] as K['required'] extends true ? never : K['from']]?: unknown
     }
-
 
 /**
  * Options for running a pipeline node:

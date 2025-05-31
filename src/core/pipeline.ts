@@ -54,7 +54,8 @@ export class ArtifactPipeline {
     const state = artifact.pipeline ?? (artifact.pipeline = {})
 
     for (const processor of this.processors) {
-      if (state[processor.name] || !(await processor.shouldRun(artifact))) continue
+      if (state[processor.name] || !(await processor.shouldRun(artifact)))
+        continue
       const { output, next } = await processor.run(artifact)
       state[processor.name] = output
 

@@ -8,7 +8,6 @@ export interface ProcessorOutput<M = unknown> {
   next?: Pick<Artifact, 'kind' | 'payload' | 'manifest'>
 }
 
-
 /**
  * Abstract base class for processors that operate on Artifact objects.
  * Subclasses must provide a unique name and implement the processing logic.
@@ -25,12 +24,11 @@ export abstract class ArtifactProcessor {
    *
    * @param artifact - The Artifact to check.
    * @returns A promise resolving to true if the processor should run; false otherwise.
-   * @default Always returns true.
+   * @default
    */
   async shouldRun(_artifact: Artifact): Promise<boolean> {
-    return true 
+    return true
   }
-
 
   /**
    * Executes the processing logic on the artifact.

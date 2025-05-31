@@ -1,43 +1,41 @@
 # comfyui-sdk
 
-[![npm downloads](https://img.shields.io/npm/dw/comfyui-sdk.svg)](https://www.npmjs.com/package/comfyui-sdk)  
-[![npm version](https://badge.fury.io/js/comfyui-sdk.svg)](https://www.npmjs.com/package/comfyui-sdk)  
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
+[![npm downloads](https://img.shields.io/npm/dw/comfyui-sdk.svg)](https://www.npmjs.com/package/comfyui-sdk)
+[![npm version](https://badge.fury.io/js/comfyui-sdk.svg)](https://www.npmjs.com/package/comfyui-sdk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-%230074c1.svg)](https://www.typescriptlang.org/)
 
 A battle-tested, TypeScript-first client for interacting with ComfyUI. Designed for large-scale Node.js applications, **comfyui-sdk** offers:
 
-- 🔄 **Type-safe Workflow Execution**  
+- 🔄 **Type-safe Workflow Execution**
   Fully typed payloads and results, ensuring end-to-end type safety when invoking ComfyUI workflows.
 
-- 📁 **Streamlined File Management**  
+- 📁 **Streamlined File Management**
   Upload, overwrite, and organize files on the ComfyUI server. Automatic format inference, custom subfolders, and overwrite flags.
 
-- 🏊 **High-throughput Connection Pooling**  
+- 🏊 **High-throughput Connection Pooling**
   Distribute requests across multiple ComfyUI instances with configurable concurrency limits and built-in load balancing.
 
-- 📝 **Flexible, Configurable Logging**  
+- 📝 **Flexible, Configurable Logging**
   Built-in logging framework with adjustable log levels (NONE, ERROR, WARN, INFO, DEBUG).
 
-- ⚡ **Robust Retry & Polling**  
+- ⚡ **Robust Retry & Polling**
   Exponential backoff, configurable retry caps, and efficient polling loops to handle long-running workflows.
 
-- 🔐 **Built-in Authentication**  
+- 🔐 **Built-in Authentication**
   Simple API-key support for secure communication.
 
-- 📦 **Advanced Pipeline Support**  
+- 📦 **Advanced Pipeline Support**
   Define reusable, type-safe input/output mappings for complex pipelines; integrate processors for artifact transformation.
 
-- 🌐 **Cloud Storage Integrations**  
+- 🌐 **Cloud Storage Integrations**
   Native AWS S3 and Tencent COS uploaders, complete with signing and URL generation.
 
-- 🎯 **Session & Resource Management**  
+- 🎯 **Session & Resource Management**
   Automatic session pooling, resource cleanup, and artifact pipelines that handle uploads, transformations, and metadata collection.
 
-- 🔧 **Modular Artifact Processors**  
+- 🔧 **Modular Artifact Processors**
   Build custom processors with fine-grained `shouldRun` logic and type-safe state propagation via `PipelineBus`.
-
-
 
 ## 🔧 Installation
 
@@ -45,7 +43,7 @@ Install via your preferred package manager:
 
 ```bash
 npm install comfyui-sdk
-````
+```
 
 ```bash
 yarn add comfyui-sdk
@@ -55,8 +53,6 @@ yarn add comfyui-sdk
 pnpm add comfyui-sdk
 ```
 
-
-
 ## 🚀 Quick Start
 
 ### 1. Initialize the Client
@@ -65,11 +61,11 @@ pnpm add comfyui-sdk
 import { ComfyUIClient, LogLevel } from 'comfyui-sdk'
 
 const client = new ComfyUIClient({
-  baseUrl: 'http://localhost:8188',     // ComfyUI server URL
-  apiKey: 'your-api-key-here',          // Optional API key
-  timeout: 90_000,                      // Request timeout (ms)
-  logging: true,                        // Enable logging
-  logLevel: LogLevel.INFO               // Adjust log verbosity
+  baseUrl: 'http://localhost:8188', // ComfyUI server URL
+  apiKey: 'your-api-key-here', // Optional API key
+  timeout: 90_000, // Request timeout (ms)
+  logging: true, // Enable logging
+  logLevel: LogLevel.INFO // Adjust log verbosity
 })
 ```
 
@@ -92,7 +88,8 @@ async function runSimple() {
   try {
     const artifacts = await client.run(simpleWorkflow)
     console.log('Artifacts:', artifacts)
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Workflow execution failed:', err)
   }
 }
@@ -110,17 +107,15 @@ const buffer = fs.readFileSync('input.jpg')
 
 async function uploadExample() {
   const result = await client.uploadFile(buffer, {
-    filename: 'input.jpg',  // Custom name on server
-    subfolder: 'images',    // Place under `uploaded/images/`
-    override: true          // Overwrite if file exists
+    filename: 'input.jpg', // Custom name on server
+    subfolder: 'images', // Place under `uploaded/images/`
+    override: true // Overwrite if file exists
   })
   console.log('Uploaded as:', result.name)
 }
 
 uploadExample()
 ```
-
-
 
 ## 📚 API Reference
 
@@ -132,45 +127,43 @@ The primary class to interface with ComfyUI. All network requests, logging, and 
 
 ```typescript
 interface ClientOptions {
-  baseUrl: string                    // E.g., 'http://localhost:8188'
-  apiKey?: string                    // Optional API key
-  timeout?: number                   // Request timeout in milliseconds (default: 90_000)
+  baseUrl: string // E.g., 'http://localhost:8188'
+  apiKey?: string // Optional API key
+  timeout?: number // Request timeout in milliseconds (default: 90_000)
   poll?: {
-    interval?: number               // Polling interval in ms (default: 4_000)
-    backoffBase?: number            // Exponential backoff base in ms (default: 2_000)
-    backoffCap?: number             // Max backoff per retry in ms (default: 15_000)
+    interval?: number // Polling interval in ms (default: 4_000)
+    backoffBase?: number // Exponential backoff base in ms (default: 2_000)
+    backoffCap?: number // Max backoff per retry in ms (default: 15_000)
   }
-  logging?: boolean                  // Enable or disable logging (default: false)
-  logLevel?: LogLevel                // One of NONE, ERROR, WARN, INFO, DEBUG (default: INFO)
+  logging?: boolean // Enable or disable logging (default: false)
+  logLevel?: LogLevel // One of NONE, ERROR, WARN, INFO, DEBUG (default: INFO)
 }
 ```
 
 #### Methods
 
-
-
 ##### `run<TNode>(workflow: WorkflowPayload, options?: RunOptions<TNode>): Promise<Artifact[]>`
 
 Execute a ComfyUI workflow. Returns an array of `Artifact` objects (binary, text, or JSON). Optionally, specify a type-safe mapping using `defineConfig`.
 
-* **Parameters**
+- **Parameters**
 
-  * `workflow`: An object whose keys are node IDs (strings or numbers) and whose values define `class_type` and `inputs`.
-  * `options` *(optional)*:
+  - `workflow`: An object whose keys are node IDs (strings or numbers) and whose values define `class_type` and `inputs`.
+  - `options` _(optional)_:
 
     ```typescript
     interface RunOptions<TNode> {
-      node?: TNode                 // A typed pipeline/node definition (from defineConfig)
+      node?: TNode // A typed pipeline/node definition (from defineConfig)
       inputs?: Record<string, unknown> // Values for required/optional pipeline inputs
     }
     ```
 
-* **Returns**
+- **Returns**
   `Promise<Artifact[]>`
 
-  * If using `defineConfig`, you’ll receive a strongly typed result object (with named outputs).
+  - If using `defineConfig`, you’ll receive a strongly typed result object (with named outputs).
 
-* **Example: Basic Execution**
+- **Example: Basic Execution**
 
   ```typescript
   const artifacts = await client.run({
@@ -179,7 +172,7 @@ Execute a ComfyUI workflow. Returns an array of `Artifact` objects (binary, text
   console.log(artifacts)
   ```
 
-* **Example: Type-safe Pipeline**
+- **Example: Type-safe Pipeline**
 
   ```typescript
   import { defineConfig } from 'comfyui-sdk'
@@ -211,39 +204,39 @@ Execute a ComfyUI workflow. Returns an array of `Artifact` objects (binary, text
   console.log('Generated image artifact:', image)
   ```
 
-
-
 ##### `uploadFile(file: Buffer | Blob, options?: UploadOptions): Promise<UploadOutput>`
 
 Upload a binary to ComfyUI’s file repository. Automatically handles file naming, subfolders, and overwrites.
 
-* **Parameters**
+- **Parameters**
 
-  * `file`: A Node.js `Buffer` or a browser `Blob`.
-  * `options`:
+  - `file`: A Node.js `Buffer` or a browser `Blob`.
+  - `options`:
 
     ```typescript
     interface UploadOptions {
-      override?: boolean       // Overwrite if a file with the same name already exists (default: false)
-      subfolder?: string       // Subfolder inside `uploaded/`; auto-creates directories (default: 'uploaded')
-      filename?: string        // Custom filename; if omitted, a UUID-based name is generated
+      override?: boolean // Overwrite if a file with the same name already exists (default: false)
+      subfolder?: string // Subfolder inside `uploaded/`; auto-creates directories (default: 'uploaded')
+      filename?: string // Custom filename; if omitted, a UUID-based name is generated
     }
     ```
-* **Returns**
+
+- **Returns**
   `Promise<UploadOutput>`
 
   ```typescript
   interface UploadOutput {
-    name: string               // Full path on server, e.g., 'uploaded/images/foo.jpg'
+    name: string // Full path on server, e.g., 'uploaded/images/foo.jpg'
     manifest: {
-      contentType: string      // MIME type (e.g., 'image/jpeg')
-      filename: string         // The final filename on server
-      size: number             // File size in bytes
+      contentType: string // MIME type (e.g., 'image/jpeg')
+      filename: string // The final filename on server
+      size: number // File size in bytes
       // ... other manifest fields
     }
   }
   ```
-* **Example**
+
+- **Example**
 
   ```typescript
   import fs from 'node:fs'
@@ -257,27 +250,25 @@ Upload a binary to ComfyUI’s file repository. Automatically handles file namin
   console.log('File URL/name:', result.name)
   ```
 
-
-
 ##### `getHistory(promptId: string): Promise<Histories>`
 
 Fetch the full execution history for a given prompt UUID.
 
-* **Parameters**
+- **Parameters**
 
-  * `promptId`: The string identifier returned by a previous workflow execution.
-* **Returns**
+  - `promptId`: The string identifier returned by a previous workflow execution.
+
+- **Returns**
   `Promise<Histories>`
 
-  * An object mapping prompt IDs to status details, timestamps, logs, and node-level progress.
-* **Example**
+  - An object mapping prompt IDs to status details, timestamps, logs, and node-level progress.
+
+- **Example**
 
   ```typescript
   const history = await client.getHistory('c2f9a8d2-1b3e-4e7c-9a11-abcdef123456')
   console.log('Status:', history['c2f9a8d2-1b3e-4e7c-9a11-abcdef123456'].status)
   ```
-
-
 
 ### ComfyUIPool
 
@@ -285,22 +276,23 @@ A pool of `ComfyUIClient` instances for load balancing across multiple ComfyUI s
 
 #### Constructor: `new ComfyUIPool(instances: InstanceConfig[], options?: PoolOptions)`
 
-* **Parameters**
+- **Parameters**
 
   ```typescript
   interface InstanceConfig {
-    baseUrl: string            // ComfyUI server URL, e.g. 'https://comfyui-1.example.com'
-    apiKey?: string            // Optional API key for that instance
-    maxConcurrency: number     // Maximum concurrent workflows on this instance
-    timeout?: number           // Override default timeout (ms)
+    baseUrl: string // ComfyUI server URL, e.g. 'https://comfyui-1.example.com'
+    apiKey?: string // Optional API key for that instance
+    maxConcurrency: number // Maximum concurrent workflows on this instance
+    timeout?: number // Override default timeout (ms)
   }
 
   interface PoolOptions {
-    logging?: boolean          // Enable logging for pool activities
-    logLevel?: LogLevel        // Log level for pooled clients
+    logging?: boolean // Enable logging for pool activities
+    logLevel?: LogLevel // Log level for pooled clients
   }
   ```
-* **Example**
+
+- **Example**
 
   ```typescript
   const pool = new ComfyUIPool([
@@ -315,22 +307,21 @@ A pool of `ComfyUIClient` instances for load balancing across multiple ComfyUI s
 
 #### Methods
 
-
-
 ##### `lease(): Promise<ClientLease>`
 
 Acquire a leased client from the pool.
 
-* **Returns**
+- **Returns**
   `Promise<ClientLease>`
 
   ```typescript
   interface ClientLease {
     client: ComfyUIClient
-    release: () => void       // Must be called when done, to return the client to the pool
+    release: () => void // Must be called when done, to return the client to the pool
   }
   ```
-* **Example**
+
+- **Example**
 
   ```typescript
   async function useLease() {
@@ -338,23 +329,24 @@ Acquire a leased client from the pool.
     try {
       const results = await lease.client.run(workflow)
       console.log('Results:', results)
-    } finally {
+    }
+    finally {
       lease.release()
     }
   }
   ```
 
-
 ##### `createSession(pipeline: ArtifactPipeline): ComfyUISession | null`
 
 Start a session that ties together a leased client + artifact pipeline. Allows you to run multiple workflows in sequence, automatically cleaning up resources and running the pipeline on each artifact.
 
-* **Parameters**
+- **Parameters**
 
-  * `pipeline`: An `ArtifactPipeline` containing one or more `ArtifactProcessor`s.
-* **Returns**
+  - `pipeline`: An `ArtifactPipeline` containing one or more `ArtifactProcessor`s.
+
+- **Returns**
   `ComfyUISession | null` if no clients are currently available.
-* **Example**
+- **Example**
 
   ```typescript
   import { ArtifactPipeline, CosUploader } from 'comfyui-sdk'
@@ -371,47 +363,45 @@ Start a session that ties together a leased client + artifact pipeline. Allows y
   ])
 
   const session = pool.createSession(pipeline)
-  if (!session) throw new Error('No available ComfyUI clients')
+  if (!session)
+    throw new Error('No available ComfyUI clients')
 
   try {
     const artifacts = await session.run(workflow)
     console.log('Session artifacts:', artifacts)
-  } finally {
+  }
+  finally {
     session.close()
   }
   ```
-
-
 
 ##### `withSession<T>(fn: (session: ComfyUISession) => Promise<T>, pipeline: ArtifactPipeline): Promise<T>`
 
 Convenience wrapper: automatically acquires a session, runs your callback, then closes the session.
 
-* **Example**
+- **Example**
 
   ```typescript
   import { ArtifactPipeline, CosUploader } from 'comfyui-sdk'
 
   const pipeline = new ArtifactPipeline([/* processors */])
 
-  const result = await pool.withSession(async session => {
+  const result = await pool.withSession(async (session) => {
     return session.run(workflow, { node: myConfig, inputs: { prompt: 'Auto' } })
   }, pipeline)
 
   console.log('Result from withSession:', result)
   ```
 
-
-
 ### ArtifactPipeline & Processors
 
 The `ArtifactPipeline` enables you to chain multiple `ArtifactProcessor` instances. Each processor can:
 
-* Inspect and transform artifacts
-* Upload results to cloud storage
-* Emit metadata or new artifacts
-* Use fine-grained `shouldRun` logic to skip irrelevant artifacts
-* Propagate state through a shared `PipelineBus`
+- Inspect and transform artifacts
+- Upload results to cloud storage
+- Emit metadata or new artifacts
+- Use fine-grained `shouldRun` logic to skip irrelevant artifacts
+- Propagate state through a shared `PipelineBus`
 
 #### Creating a Pipeline
 
@@ -438,16 +428,14 @@ const pipeline = new ArtifactPipeline([
 
 #### Built-in Processors
 
-* **CosUploader** (Tencent Cloud Object Storage)
+- **CosUploader** (Tencent Cloud Object Storage)
   Uploads binary artifacts to COS and attaches `artifact.pipeline.cosUploader.url`.
 
-* **S3Uploader** (AWS S3)
+- **S3Uploader** (AWS S3)
   Equivalent functionality for AWS: configure `bucket`, `region`, optional `prefix`, `ACL`, etc.
 
-* **(Custom Processors)**
+- **(Custom Processors)**
   Extend `ArtifactProcessor` to build your own. See “📜 Custom Processors” below.
-
-
 
 ## ⚡ Enhanced Pipeline System
 
@@ -458,12 +446,12 @@ const pipeline = new ArtifactPipeline([
 
    ```typescript
    interface ProcessorOutput<M = unknown> {
-     output: M                     // Metadata or intermediate data
+     output: M // Metadata or intermediate data
      next?: Pick<Artifact, 'kind' | 'payload' | 'manifest'> // Optional transformed artifact
    }
    ```
 
-   This allows you to both store processing data *and* replace the artifact payload/manifest in one step.
+   This allows you to both store processing data _and_ replace the artifact payload/manifest in one step.
 
 2. **Artifact Transformation**
    Use the `next` property to pass a new `Artifact` shape downstream:
@@ -472,7 +460,7 @@ const pipeline = new ArtifactPipeline([
    class WebPConverter extends ArtifactProcessor {
      readonly name = 'webpConverter'
 
-     async run(artifact: Artifact): Promise<ProcessorOutput<{ originalFormat: string; newFormat: string }>> {
+     async run(artifact: Artifact): Promise<ProcessorOutput<{ originalFormat: string, newFormat: string }>> {
        if (artifact.kind !== 'binary') {
          return { output: { originalFormat: 'n/a', newFormat: 'n/a' } }
        }
@@ -511,6 +499,7 @@ const pipeline = new ArtifactPipeline([
      async shouldRun(artifact: Artifact): Promise<boolean> {
        return artifact.kind === 'binary' && (artifact.payload as Buffer).byteLength > 1_000_000
      }
+
      async run(artifact: Artifact): Promise<ProcessorOutput<Record<string, unknown>>> {
        // Process large binaries only...
        return { output: { processed: true } }
@@ -542,8 +531,6 @@ const pipeline = new ArtifactPipeline([
    }
    ```
 
-
-
 ## 📦 Type Definitions
 
 All key types are exported for maximum TypeScript support:
@@ -551,9 +538,9 @@ All key types are exported for maximum TypeScript support:
 ```ts
 // Artifact can be a binary (Buffer/Blob), text, or JSON result
 type Artifact =
-  | { kind: 'binary'; payload: ArrayBuffer | Uint8Array | Buffer | Blob; manifest: BinaryManifest; pipeline?: PipelineState }
-  | { kind: 'text'; payload: string; manifest: TextManifest; pipeline?: PipelineState }
-  | { kind: 'json'; payload: unknown; manifest: JsonManifest; pipeline?: PipelineState }
+  | { kind: 'binary', payload: ArrayBuffer | Uint8Array | Buffer | Blob, manifest: BinaryManifest, pipeline?: PipelineState }
+  | { kind: 'text', payload: string, manifest: TextManifest, pipeline?: PipelineState }
+  | { kind: 'json', payload: unknown, manifest: JsonManifest, pipeline?: PipelineState }
 
 interface BinaryManifest {
   filename: string
@@ -611,8 +598,6 @@ class ArtifactPipeline {
 }
 ```
 
-
-
 ## 🛠 Configuration Examples
 
 ### Development Client
@@ -653,18 +638,16 @@ const prodPool = new ComfyUIPool([
 })
 ```
 
-
-
 ## 📖 Complete Examples
 
 ### 1. End-to-End Text-to-Image Workflow with Pipeline
 
 ```ts
 import {
+  ArtifactPipeline,
   ComfyUIClient,
   ComfyUIPool,
   CosUploader,
-  ArtifactPipeline,
   defineConfig,
   LogLevel
 } from 'comfyui-sdk'
@@ -681,8 +664,9 @@ const pool = new ComfyUIPool([
 class WebPConverter extends ArtifactProcessor {
   readonly name = 'webpConverter'
   async run(artifact: Artifact) {
-    if (artifact.kind !== 'binary') return { output: {} }
-    const converted = artifact.payload as Buffer  // pretend conversion
+    if (artifact.kind !== 'binary')
+      return { output: {} }
+    const converted = artifact.payload as Buffer // pretend conversion
     return {
       output: { original: artifact.manifest.contentType, converted: 'image/webp' },
       next: {
@@ -787,7 +771,8 @@ const sdxlWorkflow = {
 // 5. Execute within a session so artifacts flow through the pipeline
 async function generateImage() {
   const session = pool.createSession(pipeline)
-  if (!session) throw new Error('No available clients')
+  if (!session)
+    throw new Error('No available clients')
 
   try {
     const { image, metadata } = await session.run(sdxlWorkflow, {
@@ -802,17 +787,17 @@ async function generateImage() {
 
     console.log('Final Image Artifact:', image)
     console.log('Metadata JSON:', metadata)
-  } catch (err) {
+  }
+  catch (err) {
     console.error('Generation error:', err)
-  } finally {
+  }
+  finally {
     session.close()
   }
 }
 
 generateImage()
 ```
-
-
 
 ## 🔍 Custom Artifact Processors
 
@@ -883,8 +868,6 @@ const pipeline = new ArtifactPipeline([
 ])
 ```
 
-
-
 ## 🤝 Contributing
 
 We welcome contributions! To get started:
@@ -897,22 +880,16 @@ We welcome contributions! To get started:
 
 Please review our [CONTRIBUTING.md](https://github.com/zandko/comfyui-sdk/blob/main/CONTRIBUTING.md) before opening issues or PRs.
 
-
-
 ## 📄 License
 
 This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for full details.
 
-
-
 ## 🔗 Useful Links
 
-* **ComfyUI (Core)**: [https://github.com/comfyanonymous/ComfyUI](https://github.com/comfyanonymous/ComfyUI)
-* **comfyui-sdk**: [https://github.com/zandko/comfyui-sdk](https://github.com/zandko/comfyui-sdk)
-* **Issue Tracker**: [https://github.com/zandko/comfyui-sdk/issues](https://github.com/zandko/comfyui-sdk/issues)
-* **npm Package**: [https://www.npmjs.com/package/comfyui-sdk](https://www.npmjs.com/package/comfyui-sdk)
+- **ComfyUI (Core)**: [https://github.com/comfyanonymous/ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+- **comfyui-sdk**: [https://github.com/zandko/comfyui-sdk](https://github.com/zandko/comfyui-sdk)
+- **Issue Tracker**: [https://github.com/zandko/comfyui-sdk/issues](https://github.com/zandko/comfyui-sdk/issues)
+- **npm Package**: [https://www.npmjs.com/package/comfyui-sdk](https://www.npmjs.com/package/comfyui-sdk)
 
-
-
-*Crafted with care by Zane*
-*Node.js 18+ | TypeScript 4.5+*
+_Crafted with care by Zane_
+_Node.js 18+ | TypeScript 4.5+_

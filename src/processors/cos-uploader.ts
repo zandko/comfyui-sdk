@@ -73,11 +73,11 @@ export class CosUploader extends ArtifactProcessor {
 
     const url = this.options.signExpires
       ? await new Promise<string>((res, rej) =>
-        this.cos.getObjectUrl(
-          { Bucket: this.options.bucket, Region: this.options.region, Key, Sign: true, Expires: this.options.signExpires },
-          (e, d) => e ? rej(e) : res(d.Url),
-        ),
-      )
+          this.cos.getObjectUrl(
+            { Bucket: this.options.bucket, Region: this.options.region, Key, Sign: true, Expires: this.options.signExpires },
+            (e, d) => e ? rej(e) : res(d.Url),
+          ),
+        )
       : this.urlForKey(Key)
 
     return { output: { url } }

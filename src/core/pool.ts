@@ -115,7 +115,6 @@ export class ComfyUIPool {
     return new ComfyUISession(lease, pipeline) as T
   }
 
-
   /**
    * Convenience helper to run a function using a pooled session.
    * Automatically acquires and releases the session.
