@@ -691,6 +691,8 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 ## 🔗 Links
 
 - [ComfyUI Repository](https://github.com/comfyanonymous/ComfyUI)
+- [Documentation](https://github.com/zandko/comfyui-sdk)
+- [Issues](https://github.com/zandko/comfyui-sdk/issues)
 
 ---
 

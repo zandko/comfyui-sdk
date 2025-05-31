@@ -4,6 +4,14 @@
   "description": "ComfyUI SDK",
   "author": "Zane",
   "license": "MIT",
+  "homepage": "https://github.com/zandko/comfyui-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zandko/comfyui-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zandko/comfyui-sdk/issues"
+  },
   "keywords": [
     "ai",
     "comfyui",
