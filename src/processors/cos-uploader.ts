@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os'
 import { join as joinPath } from 'node:path'
 import COS from 'cos-nodejs-sdk-v5'
 import { extractFileExtension } from '../utils'
-import { ArtifactProcessor } from './processor'
+import { ArtifactProcessor, ProcessorOutput } from './processor'
 
 export interface CosUploaderOptions {
   bucket: string
@@ -19,6 +19,16 @@ export interface CosUploaderOptions {
   signExpires?: number
 }
 
+export interface CosUploaderOutput {
+  url: string
+}
+
+declare module '../types' {
+  interface PipelineBus {
+    cosUploader: CosUploaderOutput
+  }
+}
+
 export class CosUploader extends ArtifactProcessor {
   readonly name = 'cosUploader'
   private readonly cos: COS
@@ -28,11 +38,11 @@ export class CosUploader extends ArtifactProcessor {
     this.cos = new COS({ SecretId: options.secretId, SecretKey: options.secretKey })
   }
 
-  async shouldRun(a: Artifact) {
+  async shouldRun(a: Artifact): Promise<boolean> {
     return a.kind === 'binary'
   }
 
-  async run(artifact: Artifact) {
+  async run(artifact: Artifact): Promise<ProcessorOutput<CosUploaderOutput>> {
     const buffer = artifact.payload as Buffer
     const manifest = artifact.manifest as BinaryManifest
 
@@ -70,7 +80,7 @@ export class CosUploader extends ArtifactProcessor {
       )
       : this.urlForKey(Key)
 
-    return { url }
+    return { output: { url } }
   }
 
   private urlForKey = (k: string) =>

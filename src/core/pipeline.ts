@@ -9,7 +9,7 @@ export class ArtifactPipeline {
    * @param processors - An ordered array of ArtifactProcessor instances.
    *                     Each processor may conditionally run on artifacts.
    */
-  constructor(private readonly processors: ArtifactProcessor[] = []) {}
+  constructor(private readonly processors: ArtifactProcessor[] = []) { }
 
   /**
    * Traverses the provided artifacts structure (array or keyed object),
@@ -51,11 +51,15 @@ export class ArtifactPipeline {
    * @param artifact - The Artifact to process.
    */
   private async processArtifact(artifact: Artifact) {
-    const artifactState = artifact.pipeline ?? (artifact.pipeline = {})
+    const state = artifact.pipeline ?? (artifact.pipeline = {})
+
     for (const processor of this.processors) {
-      const { name: processorKey } = processor
-      if (await processor.shouldRun(artifact) && !(processorKey in artifactState)) {
-        artifactState[processorKey] = await processor.run(artifact)
+      if (state[processor.name] || !(await processor.shouldRun(artifact))) continue
+      const { output, next } = await processor.run(artifact)
+      state[processor.name] = output
+
+      if (next) {
+        Object.assign(artifact, next)
       }
     }
   }

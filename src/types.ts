@@ -144,10 +144,31 @@ export interface JsonManifest {
   /** Additional arbitrary metadata fields. */
   [k: string]: unknown
 }
+
+/**
+ * Bus interface for passing data between pipeline nodes.
+ */
+export interface PipelineBus {}
+
+/**
+ * State of a pipeline node.
+ */
+export type PipelineState = Record<string, unknown> & Partial<PipelineBus>
+
+/**
+ * Artifact interface representing a processed data item
+ */
+// interface PipelineArtifact {
+//   pipeline?: PipelineState
+// }
+
+/**
+ * Artifact interface representing a processed data item.
+ */
 export type Artifact =
-  | { kind: 'binary', payload: ArrayBuffer | Uint8Array | Buffer | Blob, manifest: BinaryManifest, pipeline?: Record<string, unknown> }
-  | { kind: 'text', payload: string, manifest: TextManifest, pipeline?: Record<string, unknown> }
-  | { kind: 'json', payload: unknown, manifest: JsonManifest, pipeline?: Record<string, unknown> }
+  | { kind: 'binary', payload: ArrayBuffer | Uint8Array | Buffer | Blob, manifest: BinaryManifest, pipeline?: PipelineState }
+  | { kind: 'text', payload: string, manifest: TextManifest, pipeline?: PipelineState }
+  | { kind: 'json', payload: unknown, manifest: JsonManifest, pipeline?: PipelineState }
 
 // type FileKind = 'image' | 'audio' | 'video' | 'binary';
 

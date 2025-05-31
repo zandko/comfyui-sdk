@@ -1,6 +1,15 @@
 import type { Artifact } from '../types'
 
 /**
+ * Output type for processor run results.
+ */
+export interface ProcessorOutput<M = unknown> {
+  output: M
+  next?: Pick<Artifact, 'kind' | 'payload' | 'manifest'>
+}
+
+
+/**
  * Abstract base class for processors that operate on Artifact objects.
  * Subclasses must provide a unique name and implement the processing logic.
  */
@@ -30,5 +39,5 @@ export abstract class ArtifactProcessor {
    * @param artifact - The Artifact to process.
    * @returns A promise resolving to a record of result values, keyed by this.name.
    */
-  abstract run(artifact: Artifact): Promise<Record<string, unknown>>
+  abstract run(artifact: Artifact): Promise<ProcessorOutput>
 }
