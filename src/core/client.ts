@@ -211,6 +211,19 @@ export class ComfyUIClient {
   }
 
   /**
+   * Interrupts the current generation.
+   *
+   * @returns A promise resolving when the interrupt is acknowledged.
+   */
+  async interrupt(): Promise<void> {
+    return request(`${this.baseUrl}/interrupt`, {
+      method: 'GET',
+      headers: this.headers(),
+      timeout: this.timeoutMs,
+    })
+  }
+
+  /**
    * Polls the server until the generation completes and outputs are available.
    *
    * @param promptId - The prompt identifier to poll.

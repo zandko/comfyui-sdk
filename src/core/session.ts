@@ -120,6 +120,16 @@ export class ComfyUISession {
   }
 
   /**
+   * Interrupts the current generation.
+   *
+   * @returns A promise resolving when the interrupt is acknowledged.
+   */
+  async interrupt(): Promise<void> {
+    this.assertOpen()
+    return this.lease.client.interrupt()
+  }
+
+  /**
    * Closes the session and releases the underlying client lease.
    * Subsequent calls to session methods will throw an error.
    */

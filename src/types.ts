@@ -216,24 +216,6 @@ export interface PoolMetrics {
   available: boolean
 }
 
-/**
- * Descriptor for a single node input mapping.
- */
-export interface NodeInput {
-  /** Source key in the workflow payload. */
-  from: string
-  /** Parameter name expected by the node implementation. */
-  to: string
-  /** JSON Schema for validating this input. */
-  schema?: JSONSchema
-  /** Whether this input is mandatory. */
-  required?: boolean
-  /** Whether to expose this input in generated UI/config. */
-  expose?: boolean
-  /** Default value to use if none is provided. */
-  defaultValue?: unknown
-}
-
 export type JSONValue =
   | string
   | number
