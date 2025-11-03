@@ -88,6 +88,8 @@ export class ComfyUIPool {
         best = i
       }
     }
+    if (best < 0)
+      return null
     this.sessionCounts[best]!++
     this.log.debug('Acquire', { index: best, sessions: this.sessionCounts[best] })
 

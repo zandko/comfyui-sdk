@@ -32,7 +32,7 @@ export class ComfyUIClient {
   private readonly timeoutMs: number
   private readonly baseUrl: string
   private readonly apiKey?: string
-  private readonly pollCfg: Required<ClientOptions['poll']>
+  private readonly pollCfg: Required<NonNullable<ClientOptions['poll']>>
 
   /**
    * Constructs a new ComfyUIClient.
@@ -203,7 +203,7 @@ export class ComfyUIClient {
       this.log.error('Prompt error', { promptId, messages: rec.status.messages })
       throw new Error(`Prompt ${promptId} failed: ${JSON.stringify(rec.status.messages || '{}')}`)
     }
-    else {
+    else if (!rec) {
       this.log.warn('No history found', { promptId })
     }
 
@@ -232,8 +232,11 @@ export class ComfyUIClient {
   private async pollUntilDone(promptId: string): Promise<Record<string, Artifact[]>> {
     const pollStart = Date.now()
     let attempt = 0
+    const { interval, backoffBase, backoffCap } = this.pollCfg
     while (true) {
-      const waitMs = exponentialBackoff(attempt, this.pollCfg!.interval, this.pollCfg!.backoffCap)
+      const waitMs = attempt === 0
+        ? interval
+        : exponentialBackoff(attempt - 1, backoffBase, backoffCap)
       this.log.debug('Polling', { promptId, attempt, waitMs })
       await sleep(waitMs)
       attempt++
