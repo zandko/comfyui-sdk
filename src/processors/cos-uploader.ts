@@ -47,7 +47,9 @@ export class CosUploader extends ArtifactProcessor {
     const manifest = artifact.manifest as BinaryManifest
 
     const extension = extractFileExtension(manifest.filename)
-    const Key = `${this.options.prefix}${manifest.promptId}_${Date.now()}.${extension}`
+    const prefix = this.options.prefix ?? ''
+    const keyBase = `${manifest.promptId}_${Date.now()}`
+    const Key = `${prefix}${extension ? `${keyBase}.${extension}` : keyBase}`
 
     if (buffer.length < (this.options.sliceThreshold ?? 0)) {
       await new Promise<void>((res, rej) =>

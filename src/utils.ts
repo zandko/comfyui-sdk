@@ -65,8 +65,10 @@ export function applyNodeOutputs(
   outputs?.forEach(({ from, to, defaultValue }) => {
     const art = byFrom.get(from)
     const value = art ? art.payload : defaultValue
-    if (!isUndefined(value))
-      set(response, to.split('.'), { ...art, payload: value })
+    if (!isUndefined(value)) {
+      const resolved = art ? { ...art, payload: value } : value
+      set(response, to.split('.'), resolved)
+    }
   })
   return response
 }
